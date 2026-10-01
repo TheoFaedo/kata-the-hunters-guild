@@ -1,4 +1,4 @@
-package com.theofdo.huntersguild;
+package com.theofaedo.huntersguild;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

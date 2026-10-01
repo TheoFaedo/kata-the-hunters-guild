@@ -1,4 +1,4 @@
-package com.theofdo.huntersguild;
+package com.theofaedo.huntersguild;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
