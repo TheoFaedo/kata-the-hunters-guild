@@ -54,7 +54,7 @@ public class ContractService {
         HunterEntity hunter = hunterRepository.findById(hunterId)
                 .orElseThrow(() -> new NotFoundException("Hunter not found"));
 
-        contract.complete();
+        contract.complete(hunter);
 
         final ContractEntity updatedContract = repository.save(contract);
         hunterRepository.save(hunter);

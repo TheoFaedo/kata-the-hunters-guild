@@ -60,9 +60,16 @@ public class ContractEntity {
         this.hunter = hunter;
     }
 
-    public void complete() {
-        this.status = ContractStatus.COMPLETED;
+    public void complete(HunterEntity hunter) {
+        if (!this.hunter.getId().equals(hunter.getId())) {
+            throw new ForbiddenException("This contract is owned by another hunter");
+        }
 
+        if (this.isCompleted()) {
+            throw new ConflictException("This contract is already completed");
+        }
+
+        this.status = ContractStatus.COMPLETED;
         this.hunter.acceptReward(reward);
     }
 
