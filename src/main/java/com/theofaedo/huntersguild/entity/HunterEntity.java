@@ -1,9 +1,15 @@
 package com.theofaedo.huntersguild.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "HUNTER")
+@Table(name = "HUNTERS")
 @Getter
 @Setter(AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,13 +26,28 @@ import lombok.Setter;
 public class HunterEntity {
 
     @Id
+    @Column(name = "hunder_id")
     private UUID id;
 
     private String name;
     private int level;
     private int gold;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hunter", fetch = FetchType.EAGER)
+    private List<ContractEntity> contracts = new ArrayList<>();
+
     public static HunterEntity createNew(String name) {
-        return new HunterEntity(UUID.randomUUID(), name, 1, 100);
+        return new HunterEntity(UUID.randomUUID(), name, 1, 100, new ArrayList<>());
+    }
+
+    public void addContract(ContractEntity contractEntity) {
+        this.contracts.add(contractEntity);
+    }
+
+    public void acceptReward(int gold) {
+        this.gold += gold;
+        if (contracts.stream().filter(c -> c.isCompleted()).count() % 3 == 0) {
+            this.level++;
+        }
     }
 }
