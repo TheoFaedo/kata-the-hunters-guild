@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +35,9 @@ public class ContractEntity {
     private int reward;
     private ContractStatus status;
 
+    @Version
+    private long version;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hunter_id", nullable = true)
     private HunterEntity hunter;
@@ -42,7 +46,7 @@ public class ContractEntity {
             String monster,
             int level,
             int reward, ContractStatus status) {
-        return new ContractEntity(UUID.randomUUID(), title, monster, level, reward, status, null);
+        return new ContractEntity(UUID.randomUUID(), title, monster, level, reward, status, 0L, null);
     }
 
     public void accept(HunterEntity hunter) {

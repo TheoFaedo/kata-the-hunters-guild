@@ -1,5 +1,6 @@
 package com.theofaedo.huntersguild.entity;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,14 +31,13 @@ public class HunterEntity {
     private UUID id;
 
     private String name;
-    private int level;
     private int gold;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hunter", fetch = FetchType.EAGER)
     private List<ContractEntity> contracts = new ArrayList<>();
 
     public static HunterEntity createNew(String name) {
-        return new HunterEntity(UUID.randomUUID(), name, 1, 100, new ArrayList<>());
+        return new HunterEntity(UUID.randomUUID(), name, 100, new ArrayList<>());
     }
 
     public void addContract(ContractEntity contractEntity) {
@@ -46,8 +46,10 @@ public class HunterEntity {
 
     public void acceptReward(int gold) {
         this.gold += gold;
-        if (contracts.stream().filter(c -> c.isCompleted()).count() % 3 == 0) {
-            this.level++;
-        }
+    }
+
+    @Transient
+    public int getLevel() {
+        return contracts.stream().filter(c -> c.isCompleted()).toList().size() / 3 + 1;
     }
 }
