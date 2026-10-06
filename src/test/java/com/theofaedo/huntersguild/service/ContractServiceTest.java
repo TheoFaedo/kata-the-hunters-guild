@@ -148,4 +148,17 @@ class ContractServiceTest {
                 () -> contractService.completeContract(contract.getId(), otherHunter.getId()));
     }
 
+    @Test
+    void givenHunterAndAvailableContract_whenCompleteContract_thenThrowConfictException() {
+        HunterEntity hunter = HunterEntity.createNew("James");
+
+        ContractEntity contract = ContractEntity.createNew("mocked", "mocker", 1, 10, ContractStatus.AVAILABLE);
+
+        when(contractRepository.findById(contract.getId())).thenReturn(Optional.of(contract));
+        when(hunterRepository.findById(hunter.getId())).thenReturn(Optional.of(hunter));
+
+        assertThrows(ConflictException.class,
+                () -> contractService.completeContract(contract.getId(), hunter.getId()));
+    }
+
 }

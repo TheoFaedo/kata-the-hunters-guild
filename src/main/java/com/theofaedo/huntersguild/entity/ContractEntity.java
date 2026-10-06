@@ -65,6 +65,10 @@ public class ContractEntity {
     }
 
     public void complete(HunterEntity hunter) {
+        if (!this.isAccepted()) {
+            throw new ConflictException("Only accepted contracts can be completed");
+        }
+
         if (!this.hunter.getId().equals(hunter.getId())) {
             throw new ForbiddenException("This contract is owned by another hunter");
         }
@@ -75,6 +79,10 @@ public class ContractEntity {
 
         this.status = ContractStatus.COMPLETED;
         this.hunter.acceptReward(reward);
+    }
+
+    private boolean isAccepted() {
+        return this.status == ContractStatus.ACCEPTED;
     }
 
     public boolean isCompleted() {

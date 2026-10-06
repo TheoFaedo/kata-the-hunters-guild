@@ -1,6 +1,5 @@
 package com.theofaedo.huntersguild.entity;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -48,7 +47,6 @@ public class HunterEntity {
         this.gold += gold;
     }
 
-    @Transient
     public int getLevel() {
         return contracts.stream().filter(c -> c.isCompleted()).toList().size() / 3 + 1;
     }
